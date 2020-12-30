@@ -17,13 +17,35 @@ class ProductsOverviewScreen extends StatefulWidget {
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
   var _isInit = true;
+  var _isLoading = false;
+
+  // @override
+  // void initState() {
+  //   setState(() {
+  //   _isLoading = true; } );
+  //   Future.delayed(Duration.zero).then((_) {
+  //     Provider.of<ProductsProvider>(context, listen: false).fetchProducts();
+  //   });
+  //   setState() {
+  //     _isLoading = false;
+  //   });
+  //   super.initState();
+  // }
 
   @override
-  void initState() {
-    Future.delayed(Duration.zero).then((_) {
-      Provider.of<ProductsProvider>(context).fetchProducts();
-    });
-    super.initState();
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<ProductsProvider>(context).fetchProducts().then((_) {
+        _isInit = false;
+        setState(() {
+          _isLoading = false;
+        });
+      });
+      super.didChangeDependencies();
+    }
   }
 
   // @override
@@ -32,7 +54,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   //     if (_isInit) {
   //       Provider.of<ProductsProvider>(context).fetchProducts();
   //     }
-          // _isInit = false;
+  // _isInit = false;
   //   super.didChangeDependencies();
   // }
 
@@ -83,7 +105,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showOnlyFavorites),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(_showOnlyFavorites),
     );
   }
 }
