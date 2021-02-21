@@ -74,6 +74,9 @@ class ProductsProvider extends ChangeNotifier {
       final response = await http.get(url);
       final transformedData =
           json.decode(response.body) as Map<String, dynamic>;
+      if (transformedData == null) {
+        return;
+      }
       final List<Product> loadedProducts = [];
       transformedData.forEach((productId, productData) {
         loadedProducts.add(Product(
@@ -88,7 +91,7 @@ class ProductsProvider extends ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
-      throw (error);
+      print(error);
     }
   }
 
@@ -115,7 +118,7 @@ class ProductsProvider extends ChangeNotifier {
       _items.add(newProduct);
       notifyListeners();
     } catch (error) {
-      throw error;
+      print(error);
     }
     // }).catchError((err) {
     //   throw err;

@@ -19,18 +19,18 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _isInit = true;
   var _isLoading = false;
 
-  // @override
-  // void initState() {
-  //   setState(() {
-  //   _isLoading = true; } );
-  //   Future.delayed(Duration.zero).then((_) {
-  //     Provider.of<ProductsProvider>(context, listen: false).fetchProducts();
-  //   });
-  //   setState() {
-  //     _isLoading = false;
-  //   });
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    //   setState(() {
+    //   _isLoading = true; } );
+    //   Future.delayed(Duration.zero).then((_) {
+    //     Provider.of<ProductsProvider>(context, listen: false).fetchProducts();
+    //   });
+    //   setState() {
+    //     _isLoading = false;
+    //   });
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -38,14 +38,16 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<ProductsProvider>(context).fetchProducts().then((_) {
-        _isInit = false;
+      Provider.of<ProductsProvider>(context, listen: false)
+          .fetchProducts()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
       });
-      super.didChangeDependencies();
     }
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   // @override

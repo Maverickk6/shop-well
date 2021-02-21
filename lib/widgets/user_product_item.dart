@@ -16,6 +16,7 @@ class UserProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     return Card(
       shadowColor: Colors.black45,
       child: ListTile(
@@ -44,7 +45,7 @@ class UserProductItem extends StatelessWidget {
                    await Provider.of<ProductsProvider>(context, listen: false)
                         .deleteProduct(id);
                   } catch (error) {
-                    Scaffold.of(context).showSnackBar(
+                    scaffold.showSnackBar(
                       SnackBar(
                         content: Text('Deleting Failed'),
                       ),
